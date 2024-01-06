@@ -16,7 +16,6 @@ class App extends Component {
             {name: "Jonh", salary: 800, increase:true, bonus:true, id: 1},
             {name: "Smith", salary: 1100, increase:false, bonus:false, id: 2},
             {name: "Alex", salary: 2300, increase:false, bonus:false, id: 3},
-            {name: "Pidor", salary: 1488, increase: false, bonus:false, id: 4}
         ],
         term: ""
     }
