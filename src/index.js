@@ -2,11 +2,13 @@ import React, {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from "./components/app/app.js";
+import Game from "./components/game/game.js"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <StrictMode>
     <App/>
+    <Game/>
   </StrictMode>
 );
 
