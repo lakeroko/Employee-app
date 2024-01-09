@@ -1,5 +1,8 @@
 import React from "react";
 import {Square} from "./Square";
+import {calculateWinner} from "./../../../helpers/calculateWinner"
+
+
 import "./../style/Board.css";
 
 export class Board extends React.Component {
@@ -13,14 +16,18 @@ export class Board extends React.Component {
 
   handleClick(i) {
       const squares = this.state.squares.slice();
-      const x = this.state.xIsNext;
-      if (x){
-          squares[i] = "X"
-      } else {
-          squares[i] = "O";
-      }
 
-      this.setState({squares: squares, xIsNext: !x})
+      if (calculateWinner(squares) || squares[i]){
+        return;
+      } else{
+        const x = this.state.xIsNext;
+        if (x){
+            squares[i] = "X"
+        } else {
+            squares[i] = "O";
+        }
+        this.setState({squares: squares, xIsNext: !x})
+    }
   }
 
   renderSquare(i) {
@@ -31,7 +38,14 @@ export class Board extends React.Component {
   }
 
   render() {
-    const status = 'Следующий ход: ' + (this.state.xIsNext ? 'X' : 'O');;
+    const winner = calculateWinner(this.state.squares); 
+    let status;
+
+    if (winner != null){
+      status = "Победитель " + winner;
+    } else {
+      status = "Следующий ход: " + (this.state.xIsNext ? "X" : "O")
+    }
 
     return (
       <div>
