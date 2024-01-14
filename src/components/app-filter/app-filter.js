@@ -1,20 +1,27 @@
 import "./app-filter.css"
 
-const AppFilter = () => {
+const AppFilter = (props) => {
+    const {onDefault, onUpp, onSalaryOneThousand} = props
     return (
         <div className="btn-group">
             <button 
                 className="btn btn-light"
-                type="button">
+                type="button"
+                onClick={onDefault}
+                >
                 Все сотрудники
             </button>
 
             <button type="button"
-                className="btn btn-outline-light">
+                className="btn btn-outline-light"
+                onClick={onUpp}
+                >
                 На повышение
             </button>
             <button type="button"
-                className="btn btn-outline-light">
+                className="btn btn-outline-light"
+                onClick={onSalaryOneThousand}
+                >
                 З/П больше 1000$
             </button>
         </div>
