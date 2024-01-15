@@ -1,31 +1,31 @@
 import "./app-filter.css"
 
 const AppFilter = (props) => {
-    const {onDefault, onUpp, onSalaryOneThousand} = props
+    const buttonsData = [
+        {name: 'all', label: 'Все сотрудники'},
+        {name: 'increase', label: 'На повышение'},
+        {name: 'more1000', label: 'З/П больше 1000$'}
+    ];
+
+    const buttons = buttonsData.map(({name, label}) => {
+        const active = props.filter === name; // если  filter из пропсов совпадает с name
+        const clazz = active ? 'btn-light' : 'btn-outline-light'; // то этот класс должен быть активным, и на эту кнопку навешивается класс 'btn-light'  
+        return (
+            <button type="button"
+                    className={`btn ${clazz}`}
+                    key={name}
+                    onClick={() => props.onFilterSelect(name)}>
+                    {label}
+            </button>
+        )
+    })
+
     return (
         <div className="btn-group">
-            <button 
-                className="btn btn-light"
-                type="button"
-                onClick={onDefault}
-                >
-                Все сотрудники
-            </button>
-
-            <button type="button"
-                className="btn btn-outline-light"
-                onClick={onUpp}
-                >
-                На повышение
-            </button>
-            <button type="button"
-                className="btn btn-outline-light"
-                onClick={onSalaryOneThousand}
-                >
-                З/П больше 1000$
-            </button>
+            {buttons}
         </div>
     )
 }
+
 
 export default AppFilter;

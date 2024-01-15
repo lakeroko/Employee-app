@@ -13,17 +13,12 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-            {name: "Jonh", salary: 800, increase:true, bonus:true, id: 1},
+            {name: "Jonh", salary: 800, increase:true, bonus:false, id: 1},
             {name: "Smith", salary: 1100, increase:false, bonus:false, id: 2},
             {name: "Alex", salary: 2300, increase:false, bonus:false, id: 3},
         ],
-        Increase: [],
-        isIncrease: false,
-
-        SalaryOneThousand: [],
-        isSalaryOneThousand: false,
-
         term: "",
+        filter: "all",
     }
 }
 
@@ -65,86 +60,55 @@ class App extends Component {
         })
     }
 
-    handleSearch = (ArrItems, term) => {
-        if (term.length === 0){
-            return ArrItems;
+    searchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items;
         }
 
-        return ArrItems.filter((value) => {
-            return value.name.indexOf(term) > -1
+        return items.filter(item => {
+            return item.name.indexOf(term) > -1
         })
     }
 
-    onUpdateSearch = (newTerm) => {
-        this.setState(state => {
-            return {
-                term: newTerm
+    onUpdateSearch = (term) => {
+        // обновляет состояние term
+        this.setState({term})
+    }
+
+    filterPost = (data, filter) => { 
+        // возвращает новый массив
+        switch (filter) {
+            case 'increase':
+                return data.filter(item => item.increase)
+            case "more1000":
+                return data.filter(item => item.salary >= 1000)
+            default:
+                return data;
             }
-        })
     }
 
-    onUpp = () => {
-        const {data} = this.state;
-
-        this.setState({
-            isIncrease: true, 
-            isSalaryOneThousand: false,
-            Increase: data.filter(item => item.increase),
-        })
+    onFilterSelect = (filter) => {
+        // обновляет состояние filter
+        this.setState({filter})
     }
-
-    onSalaryOneThousand = () => {
-        const {data} = this.state;
-
-        this.setState({isSalaryOneThousand: true,
-            isIncrease: false, 
-            SalaryOneThousand: data.filter(item => item.salary >= 1000)})
-    }
-
-    onDefault = () => {
-        const {isIncrease, isSalaryOneThousand} = this.state;
-
-        if (isIncrease || isSalaryOneThousand){
-            this.setState({isIncrease: false, isSalaryOneThousand: false})
-        }
-    }
-
-    addCurrentData = () => {
-        
-    }
-
 
     render(){
-        const {data, term, 
-            isIncrease, Increase,
-            isSalaryOneThousand, SalaryOneThousand
-        } = this.state
+        const {data, term, filter} = this.state
+        const employees = data.length;
+        const increase = data.filter(item => item.increase).length;
 
-        let visibleData;
-
-        if (isIncrease){
-            visibleData = this.handleSearch(Increase, term)
-        } else if (isSalaryOneThousand){
-            visibleData = this.handleSearch(SalaryOneThousand, term)
-        } else {
-            visibleData = this.handleSearch(data, term)
-        }
+        const visibleData = this.filterPost(this.searchEmp(data, term), filter);
 
         return (
             <div className="app">
                 <AppInfo 
-                count={this.state.data.length} 
-                increase={visibleData.filter((item) => {
-                    return item.increase;
-                }).length}
+                employees={employees} 
+                increase={increase}
                 />
 
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch} />
-                    <AppFilter onUpp={this.onUpp} 
-                    onDefault={this.onDefault}
-                    onSalaryOneThousand={this.onSalaryOneThousand}
-                    />
+                    <AppFilter onFilterSelect={this.onFilterSelect}/>
                 </div>
                 <EmployeesList 
                 data={visibleData} 
