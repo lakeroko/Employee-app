@@ -24,7 +24,7 @@ class App extends Component {
 
     deleteItem = (id) => {
         this.setState(({data}) => {
-            const newArr = data.filter((elem, index) => {
+            const newArr = data.filter(elem => {
                 return elem.id !== id
             })
             return {data: newArr}
@@ -32,21 +32,22 @@ class App extends Component {
     }
 
     addNewPerson = (name, salary) => {
-        
-        this.setState(({data}) => {
-            const newArr = []
-            Object.assign(newArr, data)
-            newArr.push(
-                {
-                    name: name, 
-                    salary: salary, 
-                    increase: false, 
-                    bonus: false,
-                    id: data[data.length-1].id+1
-                }
-            )
-            return {data: newArr}
-        })
+        if (name !== "" && salary != ""){
+            this.setState(({data}) => {
+                const newArr = []
+                Object.assign(newArr, data)
+                newArr.push(
+                    {
+                        name: name, 
+                        salary: salary, 
+                        increase: false, 
+                        bonus: false,
+                        id: data[data.length-1].id+1
+                    }
+                )
+                return {data: newArr}
+            })
+        }
     }
 
     onToggle = (id, elem) => {
@@ -66,7 +67,9 @@ class App extends Component {
         }
 
         return items.filter(item => {
-            return item.name.indexOf(term) > -1
+            return item.name
+            .toLowerCase()
+            .indexOf(term) > -1
         })
     }
 
@@ -108,7 +111,7 @@ class App extends Component {
 
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch} />
-                    <AppFilter onFilterSelect={this.onFilterSelect}/>
+                    <AppFilter onFilterSelect={this.onFilterSelect} filter={filter}/>
                 </div>
                 <EmployeesList 
                 data={visibleData} 

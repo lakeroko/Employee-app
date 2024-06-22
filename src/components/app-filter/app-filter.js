@@ -10,6 +10,7 @@ const AppFilter = (props) => {
     const buttons = buttonsData.map(({name, label}) => {
         const active = props.filter === name; // если  filter из пропсов совпадает с name
         const clazz = active ? 'btn-light' : 'btn-outline-light'; // то этот класс должен быть активным, и на эту кнопку навешивается класс 'btn-light'  
+        
         return (
             <button type="button"
                     className={`btn ${clazz}`}
